@@ -17,7 +17,6 @@ public class NoteController {
     @GetMapping("/list")
     public ModelAndView getList() {
         ModelAndView result = new ModelAndView("notes/list");
-        System.out.println("noteService.listAll() in NoteController = " + noteService.listAll().toString());
         result.addObject("notes", noteService.listAll().values());
         return result;
     }
@@ -25,8 +24,7 @@ public class NoteController {
     @PostMapping("/delete")
     public void delete(@RequestParam(name = "id") String noteId,
                        HttpServletResponse resp) {
-//            noteService.deleteById(noteId);
-        System.out.println("noteId = " + noteId);
+            noteService.deleteById(noteId);
         try {
             resp.sendRedirect("http://localhost:8080/note/list");
         } catch (IOException e) {
