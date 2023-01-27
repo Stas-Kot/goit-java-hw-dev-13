@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Note edit</title>
+    <style>
+    input:hover {
+    cursor: pointer;
+   }
+    </style>
+</head>
+<body style="background-color: 	#d9d9d9; padding: 20px;">
+<form name="edit" method="post" action="/note/edit"
+      style="width: 550px;  background-color: #ffb31a; padding: 20px; border-radius: 20px; margin-bottom: 10px;">
+    <p style="font-size: 30px"><b>Note title:</b><br>
+        <input name="title" type="text" size="40" th:field="${note.title}" style="height: 40px; font-size: 20px;"/>
+    </p>
+    <input name="noteId" type="text" th:field="${note.id}" hidden/>
+    <p style="font-size: 25px">Note content:<Br>
+        <textarea name="content" th:text="${note.content}"
+                  style="width: 450px; height: 120px; font-size: 20px;"></textarea></p>
+    <p><input type="submit" value="Done"
+              style="width: 150px; height: 50px; border-radius: 15px; font-size: 25px;  background-color: #000066; color: white;"/>
+    </p>
+</form>
+</body>
+</html>

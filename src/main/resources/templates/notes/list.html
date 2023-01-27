@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Note list</title>
+    <style>
+   input:hover {
+    cursor: pointer;
+   }
+   a:link {
+    color: white;
+   }
+   a:visited {
+    color: white;
+   }
+   a:active {
+    color: white;
+   }
+  </style>
+</head>
+<body style="background-color: 	#d9d9d9;">
+    <div style="display: flex; justify-content: space-around; padding: 50px;">
+        <div>
+            <p style="display: flex; flex-direction: column; font-size: 40px; text-align: center; margin: 0; padding: 20px; border-radius: 25px; width: 300px; color: white; background-color: #000066;"><span><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg></span> Add new note</p>
+        </div>
+
+        <div>
+            <h1 style="font-size: 50px; text-decoration: underline; margin-left: 40px;">Note list:</h1>
+            <ul style="font-size: 30px;">
+                <li th:each="note : ${notes}" style="background-color: #ffb31a; padding: 20px; border-radius: 20px; margin-bottom: 10px;">
+                    <form name="noteItem" method="post" action="/note/delete">
+                        <h3 th:text="${note.title}"></h3>
+                        <p th:text="${note.content}" style="max-width: 650px;"></p>
+                        <input name="id" type="text" th:value="${note.id}" hidden/>
+                        <p><span><button style="width: 150px; height: 50px; border-radius: 15px; font-size: 25px;  background-color: #000066; color: white;"><a th:href="@{'/note/edit?id=' + ${note.id}}" style="text-decoration: none;">Edit</a></button></span> <span><input type="submit" value="Delete" style="width: 150px; height: 50px; border-radius: 15px; font-size: 25px; background-color: #000066; color: white;"/></span></p>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
