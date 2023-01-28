@@ -31,7 +31,7 @@ public class NoteService {
         return noteList;
     }
 
-    public Note add(Note note) {
+    public synchronized Note add(Note note) {
 //        String tempId = UUID.randomUUID().toString();
 //        while(isMatch(tempId, listAll())) {
 //            tempId = UUID.randomUUID().toString();
@@ -53,7 +53,7 @@ public class NoteService {
         return listAll().get(id);
     }
 
-    public void deleteById(String id) {
+    public synchronized void deleteById(String id) {
 //        listAll().remove(getById(id));
         if(!isMatch(id, listAll())) {
             throw new RuntimeException("Note with " + id + " doesn't exist!");
@@ -62,7 +62,7 @@ public class NoteService {
         }
     }
 
-    public void update(Note note) {
+    public synchronized void update(Note note) {
         Note noteForUpdate = getById(note.getId());
         noteForUpdate.setTitle(note.getTitle());
         noteForUpdate.setContent(note.getContent());
