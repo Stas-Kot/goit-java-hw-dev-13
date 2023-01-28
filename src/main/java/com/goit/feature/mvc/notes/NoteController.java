@@ -17,7 +17,7 @@ public class NoteController {
     @GetMapping("/list")
     public ModelAndView getList() {
         ModelAndView result = new ModelAndView("notes/list");
-        result.addObject("notes", noteService.listAll().values());
+        result.addObject("notes", noteService.listAll());
         return result;
     }
 
@@ -49,8 +49,7 @@ public class NoteController {
 
     @PostMapping("/create")
     public RedirectView saveCreatedNote(Note note) {
-        System.out.println("note = " + note);
-        System.out.println("noteService.add(note) = " + noteService.add(note));
+        noteService.add(note);
         return new RedirectView("list");
     }
 }

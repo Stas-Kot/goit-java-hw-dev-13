@@ -3,9 +3,7 @@ package com.goit.feature.mvc.notes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -27,8 +25,9 @@ public class NoteService {
 //        return noteList;
 //    }
 
-    public Map<String, Note> listAll() {
-        return noteList;
+    public List<Note> listAll() {
+//        return noteList;
+        return new ArrayList<>(noteList.values());
     }
 
     public synchronized Note add(Note note) {
@@ -40,32 +39,29 @@ public class NoteService {
 //        return note;
 
         String tempId = UUID.randomUUID().toString();
-        while(isMatch(tempId, listAll())) {
+        while(isMatch(tempId, noteList)) {
             tempId = UUID.randomUUID().toString();
         }
         note.setId(tempId);
-        listAll().put(tempId, note);
+        noteList.put(tempId, note);
         return note;
     }
 
     public Note getById(String id) {
 //       return listAll().stream().filter(note -> note.getId().equals(id)).findFirst().orElseThrow(IllegalArgumentException::new);
-        return listAll().get(id);
+        return noteList.get(id);
     }
 
     public synchronized void deleteById(String id) {
-//        listAll().remove(getById(id));
-        if(!isMatch(id, listAll())) {
+        if(!isMatch(id, noteList)) {
             throw new RuntimeException("Note with " + id + " doesn't exist!");
         } else {
-            listAll().remove(id);
+            noteList.remove(id);
         }
     }
 
     public synchronized void update(Note note) {
-        Note noteForUpdate = getById(note.getId());
-        noteForUpdate.setTitle(note.getTitle());
-        noteForUpdate.setContent(note.getContent());
+        noteList.put(note.getId(), note);
     }
 
 //    private static boolean isMatch(String tempId, List<Note> noteList) {
