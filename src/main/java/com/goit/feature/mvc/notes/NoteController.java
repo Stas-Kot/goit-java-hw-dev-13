@@ -1,5 +1,6 @@
 package com.goit.feature.mvc.notes;
 
+import com.goit.feature.mvc.notes.dto.NoteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -17,7 +20,8 @@ public class NoteController {
     @GetMapping("/list")
     public ModelAndView getList() {
         ModelAndView result = new ModelAndView("notes/list");
-        result.addObject("notes", noteService.listAll());
+        List<NoteDto> notes = noteService.listAll().stream().map(NoteDto::fromNote).collect(Collectors.toList());
+        result.addObject("notes", notes);
         return result;
     }
 
@@ -30,14 +34,14 @@ public class NoteController {
     @GetMapping("/edit")
     public ModelAndView edit(@RequestParam(name = "id") String id) {
         ModelAndView result = new ModelAndView("notes/edit");
-        result.addObject("note", noteService.getById(id));
-
+        Note note = noteService.getById(id);
+        result.addObject("note", NoteDto.fromNote(note));
         return result;
     }
 
     @PostMapping("/edit")
-    public RedirectView saveUpdatedNote(Note note) {
-        noteService.update(note);
+    public RedirectView saveUpdatedNote(NoteDto noteDto) {
+        noteService.update(noteDto.toNote());
         return new RedirectView("list");
     }
 
@@ -48,8 +52,8 @@ public class NoteController {
 
 
     @PostMapping("/create")
-    public RedirectView saveCreatedNote(Note note) {
-        noteService.add(note);
+    public RedirectView saveCreatedNote(NoteDto noteDto) {
+        noteService.add(noteDto.toNote());
         return new RedirectView("list");
     }
 }
