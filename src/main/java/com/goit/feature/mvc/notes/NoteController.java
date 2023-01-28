@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @RequiredArgsConstructor
 @Controller
@@ -22,15 +22,9 @@ public class NoteController {
     }
 
     @PostMapping("/delete")
-    public void delete(@RequestParam(name = "id") String noteId,
-                       HttpServletResponse resp) {
-            noteService.deleteById(noteId);
-        try {
-            resp.sendRedirect("http://localhost:8080/note/list");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public RedirectView delete(@RequestParam(name = "id") String noteId) {
+        noteService.deleteById(noteId);
+        return new RedirectView("list");
     }
 
     @GetMapping("/edit")
@@ -42,38 +36,21 @@ public class NoteController {
     }
 
     @PostMapping("/edit")
-    public void saveUpdatedNote(@RequestParam(name = "title") String noteTitle,
-                                @RequestParam(name = "content") String noteContent,
-                                @RequestParam(name = "id") String noteId,
-                                HttpServletResponse resp) {
-        Note note = new Note(noteId, noteTitle, noteContent);
+    public RedirectView saveUpdatedNote(Note note) {
         noteService.update(note);
-
-        try {
-            resp.sendRedirect("http://localhost:8080/note/list");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return new RedirectView("list");
     }
 
     @GetMapping("/create")
-    public ModelAndView newNote() {
-        ModelAndView result = new ModelAndView("notes/create");
-        return result;
+    public ModelAndView create() {
+        return new ModelAndView("notes/create");
     }
 
 
     @PostMapping("/create")
-    public void create(@RequestParam(name = "title") String noteTitle,
-                       @RequestParam(name = "content") String noteContent,
-                       HttpServletResponse resp) {
-        Note note = new Note(noteTitle, noteContent);
-        noteService.add(note);
-
-        try {
-            resp.sendRedirect("http://localhost:8080/note/list");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public RedirectView saveCreatedNote(Note note) {
+        System.out.println("note = " + note);
+        System.out.println("noteService.add(note) = " + noteService.add(note));
+        return new RedirectView("list");
     }
 }

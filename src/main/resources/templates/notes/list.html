@@ -36,10 +36,10 @@
         <div>
             <h1 style="font-size: 50px; text-decoration: underline; margin-left: 40px;">Note list:</h1>
             <ul style="font-size: 30px;">
-                <li th:each="note : ${notes}" style="background-color: #ffb31a; padding: 20px; border-radius: 20px; margin-bottom: 10px;">
+                <li th:each="note : ${notes}" style="background-color: #ffb31a; padding: 20px; border-radius: 20px; width: 650px; margin-bottom: 10px;">
                     <form name="noteItem" method="post" action="/note/delete">
-                        <h3 th:text="${note.title}"></h3>
-                        <p th:text="${note.content}" style="max-width: 650px;"></p>
+                        <h3 th:text="${note.title}" style="word-break: break-all;"></h3>
+                        <p th:text="${note.content}" style="word-break: break-all;"></p>
                         <input name="id" type="text" th:value="${note.id}" hidden/>
                         <p><span><button type="button" style="width: 150px; height: 50px; border-radius: 15px; font-size: 25px;  background-color: #000066; color: white;"><a th:href="@{'/note/edit?id=' + ${note.id}}">Edit</a></button></span> <span><input type="submit" value="Delete" style="width: 150px; height: 50px; border-radius: 15px; font-size: 25px; background-color: #000066; color: white;"/></span></p>
                     </form>
